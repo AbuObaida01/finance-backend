@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm          # ADD THIS
 from sqlalchemy.orm import Session
 from app.db.session import get_db
-from app.schemas.user import UserRegister, UserLogin, UserResponse, TokenResponse
+from app.schemas.user import UserRegister, UserResponse, TokenResponse
 from app.models.user import User
 from app.core.security import hash_password, verify_password, create_access_token
 
@@ -26,9 +27,13 @@ def register(payload: UserRegister, db: Session = Depends(get_db)):
     return user
 
 @router.post("/login", response_model=TokenResponse)
-def login(payload: UserLogin, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == payload.email).first()
-    if not user or not verify_password(payload.password, user.hashed_password):
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),   # CHANGED
+    db: Session = Depends(get_db)
+):
+    # form_data.username is the email field in Swagger
+    user = db.query(User).filter(User.email == form_data.username).first()
+    if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     if not user.is_active:
         raise HTTPException(status_code=403, detail="Account is inactive")
