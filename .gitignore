@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env/
+
+# Environment variables (IMPORTANT)
+.env
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# SQLite (if ever used)
+*.sqlite3
+
+# Alembic migrations (optional - depends)
+alembic/versions/*.pyc
+
+# Build / dist
+build/
+dist/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
