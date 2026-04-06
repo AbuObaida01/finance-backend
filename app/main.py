@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.v1 import auth, records, users
+from app.api.v1 import auth, records, users, dashboard
 from app.db.base import Base
 from app.db.session import engine
 import app.models.user
@@ -16,6 +16,7 @@ app = FastAPI(
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(records.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
+app.include_router(dashboard.router, prefix="/api/v1")
 
 @app.get("/", tags=["Health"])
 def root():
